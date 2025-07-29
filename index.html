@@ -4,16 +4,115 @@
   <title>Our Cloud</title>
   <style>
     body {
-      background: skyblue;
-      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background: linear-gradient(to top, #a0d8ef, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    #sky {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .cloud {
+      position: absolute;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+      animation: floatCloud 30s linear infinite;
+      opacity: 0.9;
+    }
+
+    @keyframes floatCloud {
+      0% { left: -200px; }
+      100% { left: 110%; }
+    }
+
+    #form {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.8);
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    input, select {
+      padding: 8px;
+      margin: 5px;
+      border: none;
+      border-radius: 10px;
+    }
+
+    button {
+      padding: 8px 16px;
+      border: none;
+      background: #5d9cec;
       color: white;
-      text-align: center;
-      margin-top: 100px;
+      border-radius: 10px;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
-  <h1>☁️ Welcome to Our Cloud</h1>
-  <p>Add floating thoughts like clouds in the sky</p>
+  <div id="sky"></div>
+
+  <div id="form">
+    <input id="message" type="text" placeholder="Write a thought..." />
+    <select id="mood">
+      <option value="sunny">☀️ Happy</option>
+      <option value="rainy">🌧️ Sad</option>
+      <option value="stormy">⛈️ Angry</option>
+    </select>
+    <button onclick="addCloud()">☁️ Add Cloud</button>
+  </div>
+
+  <script>
+    const sky = document.getElementById('sky');
+
+    function randomTop() {
+      return Math.floor(Math.random() * 80 + 10) + "%";
+    }
+
+    function addCloud() {
+      const msg = document.getElementById('message').value;
+      const mood = document.getElementById('mood').value;
+      if (!msg) return;
+
+      const cloud = document.createElement('div');
+      cloud.className = 'cloud';
+      cloud.style.top = randomTop();
+      cloud.textContent = "☁️ tap to read";
+      cloud.dataset.real = msg;
+
+      cloud.onclick = function () {
+        alert("💬 " + cloud.dataset.real);
+      };
+
+      sky.appendChild(cloud);
+      document.getElementById('message').value = '';
+
+      setMoodBackground(mood);
+    }
+
+    function setMoodBackground(mood) {
+      if (mood === 'sunny') {
+        document.body.style.background = "linear-gradient(to top, #a0d8ef, #ffffff)";
+      } else if (mood === 'rainy') {
+        document.body.style.background = "linear-gradient(to top, #4a90e2, #cceeff)";
+      } else if (mood === 'stormy') {
+        document.body.style.background = "linear-gradient(to top, #2f2f2f, #555)";
+      }
+    }
+  </script>
 </body>
 </html>
+
